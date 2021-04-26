@@ -24,7 +24,7 @@ namespace PizzaBox.Client
     private static readonly CrustSingleton _crustSingleton = CrustSingleton.Instance;
     private static readonly SizeSingleton _sizeSingleton = SizeSingleton.Instance;
     private static readonly ToppingSingleton _toppingSingleton = ToppingSingleton.Instance;
-    private static readonly PizzaBoxContext _context = new PizzaBoxContext();
+    private static readonly PizzaBoxContext _contextSingleton = ContextSingleton.Instance;
     private static List<Order> CustomerOrders = new List<Order>();
 
     /// <summary>
@@ -252,11 +252,11 @@ namespace PizzaBox.Client
     }
     private static void SaveOrderToDatabase(Order order)
     {
-      order.Pizza.Size = _context.Sizes.FirstOrDefault(s => s.Name == order.Pizza.Size.Name);
-      order.Pizza.Crust = _context.Crusts.FirstOrDefault(s => s.Name == order.Pizza.Crust.Name);
-      order.Store = _context.Stores.FirstOrDefault(s => s.Name == order.Store.Name);
-      _context.Order.Add(order);
-      _context.SaveChanges();
+      order.Pizza.Size = _contextSingleton.Sizes.FirstOrDefault(s => s.Name == order.Pizza.Size.Name);
+      order.Pizza.Crust = _contextSingleton.Crusts.FirstOrDefault(s => s.Name == order.Pizza.Crust.Name);
+      order.Store = _contextSingleton.Stores.FirstOrDefault(s => s.Name == order.Store.Name);
+      _contextSingleton.Order.Add(order);
+      _contextSingleton.SaveChanges();
     }
     private static void AskOrderAgain()
     {
@@ -273,13 +273,18 @@ namespace PizzaBox.Client
 
       if (valid && input == 2)
       {
+        decimal total = 0.00m;
         foreach (var order in CustomerOrders)
         {
-          Console.WriteLine("~~~~~~~~~~~~");
+          Console.WriteLine("------------");
           Console.WriteLine($"{order.Pizza.Size}, {order.Pizza.Crust} Crust, {order.Pizza.Name}");
           Console.WriteLine(GenerateToppingsList(order));
-          AskOrderAgain();
+          Console.WriteLine($"${order.TotalCost}");
+          total += order.TotalCost;
         }
+        Console.WriteLine("------------");
+        Console.WriteLine($"Grand Total: ${total}");
+        AskOrderAgain();
       }
       else AskOrderAgain();
     }

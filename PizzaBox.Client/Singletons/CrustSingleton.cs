@@ -13,7 +13,8 @@ namespace PizzaBox.Client.Singletons
   {
     private const string _path = @"data/crusts.xml";
     private readonly FileRepository _fileRepository = new FileRepository();
-    private readonly PizzaBoxContext _context = new PizzaBoxContext();
+    private static readonly PizzaBoxContext _contextSingleton = ContextSingleton.Instance;
+
     private static CrustSingleton _instance;
 
     public List<ACrust> Crusts { get; }
@@ -37,7 +38,7 @@ namespace PizzaBox.Client.Singletons
     {
       if (Crusts == null)
       {
-        //Crusts = _context.Crusts.ToList();
+        //Crusts = _contextSingleton.Crusts.ToList();
         Crusts = _fileRepository.ReadFromFile<List<ACrust>>(_path);
       }
     }

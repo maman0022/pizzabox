@@ -12,7 +12,7 @@
       "program": "${workspaceFolder}/PizzaBox.Client/bin/Debug/net5.0/PizzaBox.Client.dll",
       "args": [],
       "cwd": "${workspaceFolder}/PizzaBox.Client",
-      "console": "internalConsole",
+      "console": "externalTerminal",
       "stopAtEntry": false
     },
     {

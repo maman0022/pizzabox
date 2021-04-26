@@ -26,7 +26,7 @@ namespace PizzaBox.Testing.Tests
       var actual = sut.Name;
 
       // assert
-      Assert.True(actual == "ChicagoStore");
+      Assert.True(actual == "Chicago Store");
       Assert.True(sut.ToString() == actual);
     }
 
@@ -38,11 +38,11 @@ namespace PizzaBox.Testing.Tests
     {
       var sut = new NewYorkStore();
 
-      Assert.True(sut.Name.Equals("NewYorkStore"));
+      Assert.True(sut.Name.Equals("New York Store"));
     }
 
     /// <summary>
-    /// 
+    /// test tostring override
     /// </summary>
     /// <param name="store"></param>
     [Theory]

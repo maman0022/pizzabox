@@ -14,7 +14,8 @@ namespace PizzaBox.Client.Singletons
     private readonly FileRepository _fileRepository = new FileRepository();
     private static PizzaSingleton _instance;
     private const string _path = @"data/pizzas.xml";
-    private readonly PizzaBoxContext _context = new PizzaBoxContext();
+    private static readonly PizzaBoxContext _contextSingleton = ContextSingleton.Instance;
+
 
     public List<APizza> Pizzas { get; set; }
     public static PizzaSingleton Instance
@@ -35,7 +36,7 @@ namespace PizzaBox.Client.Singletons
     /// </summary>
     private PizzaSingleton()
     {
-      //Pizzas = _context.Pizzas.ToList();
+      //Pizzas = _contextSingleton.Pizzas.ToList();
       Pizzas = _fileRepository.ReadFromFile<List<APizza>>(_path);
     }
   }
