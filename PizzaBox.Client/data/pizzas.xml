@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfAPizza xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <APizza xsi:type="MeatPizza">
+    <EntityId>0</EntityId>
+    <Toppings>
+      <ATopping xsi:type="Pepperoni">
+        <Name>Pepperoni</Name>
+        <Price>3.00</Price>
+      </ATopping>
+      <ATopping xsi:type="Sausage">
+        <Name>Sausage</Name>
+        <Price>3.00</Price>
+      </ATopping>
+    </Toppings>
+    <Name>Meat Pizza</Name>
+  </APizza>
+  <APizza xsi:type="VeggiePizza">
+    <EntityId>0</EntityId>
+    <Toppings>
+      <ATopping xsi:type="Mushrooms">
+        <Name>Mushrooms</Name>
+        <Price>2.00</Price>
+      </ATopping>
+      <ATopping xsi:type="Onions">
+        <Name>Onions</Name>
+        <Price>2.00</Price>
+      </ATopping>
+    </Toppings>
+    <Name>Veggie Pizza</Name>
+  </APizza>
+  <APizza xsi:type="CustomPizza">
+    <EntityId>0</EntityId>
+    <Toppings />
+    <Name>Custom Pizza</Name>
+  </APizza>
+</ArrayOfAPizza>

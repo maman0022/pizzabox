@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfASize xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ASize xsi:type="Small">
+    <Name>Small</Name>
+    <Price>5.00</Price>
+  </ASize>
+  <ASize xsi:type="Medium">
+    <Name>Medium</Name>
+    <Price>6.00</Price>
+  </ASize>
+  <ASize xsi:type="Large">
+    <Name>Large</Name>
+    <Price>7.00</Price>
+  </ASize>
+</ArrayOfASize>

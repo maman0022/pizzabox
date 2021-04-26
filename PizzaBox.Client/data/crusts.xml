@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfACrust xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ACrust xsi:type="Thin">
+    <Name>Thin</Name>
+    <Price>4.00</Price>
+  </ACrust>
+  <ACrust xsi:type="Pan">
+    <Name>Pan</Name>
+    <Price>5.00</Price>
+  </ACrust>
+  <ACrust xsi:type="Stuffed">
+    <Name>Stuffed</Name>
+    <Price>6.00</Price>
+  </ACrust>
+</ArrayOfACrust>
