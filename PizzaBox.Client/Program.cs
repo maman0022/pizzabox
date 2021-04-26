@@ -25,26 +25,32 @@ namespace PizzaBox.Client
     private static readonly SizeSingleton _sizeSingleton = SizeSingleton.Instance;
     private static readonly ToppingSingleton _toppingSingleton = ToppingSingleton.Instance;
     private static readonly PizzaBoxContext _context = new PizzaBoxContext();
+    private static List<Order> CustomerOrders = new List<Order>();
 
     /// <summary>
     /// 
     /// </summary>
     private static void Main()
     {
-      Run();
+      Run(true);
     }
 
     /// <summary>
     /// 
     /// </summary>
-    private static void Run()
+    private static void Run(bool firstRun)
     {
       var order = new Order();
 
-      Console.WriteLine("Welcome to PizzaBox");
+      if (firstRun)
+      {
+        Console.WriteLine("Welcome to PizzaBox");
 
-      var customerName = GetCustomerName();
-      order.Customer = new Customer(customerName);
+        var customerName = GetCustomerName();
+        order.Customer = new Customer(customerName);
+      }
+
+      else order.Customer = CustomerOrders[0].Customer;
 
       PrintStoreList();
       order.Store = SelectStore();
@@ -65,6 +71,7 @@ namespace PizzaBox.Client
 
       PrintOrder(order);
       SaveOrderToDatabase(order);
+      CustomerOrders.Add(order);
 
       AskOrderAgain();
     }
@@ -223,19 +230,23 @@ namespace PizzaBox.Client
 
       return _crustSingleton.Crusts[input - 1];
     }
-    private static void PrintOrder(Order order)
+    private static string GenerateToppingsList(Order order)
     {
-      Console.WriteLine("~~~~~~~~~~~~");
-      Console.WriteLine($"{order.Customer}, Your order is as follows:");
-      Console.WriteLine($"{order.Store}");
-      Console.WriteLine($"{order.Pizza.Size}, {order.Pizza.Crust} Crust, {order.Pizza.Name}");
       var stringBuilder = new StringBuilder();
       var toppingsString = "Toppings:";
       foreach (var topping in order.Pizza.Toppings)
       {
         toppingsString += $" {topping},";
       }
-      Console.WriteLine(toppingsString.TrimEnd(','));
+      return toppingsString.TrimEnd(',');
+    }
+    private static void PrintOrder(Order order)
+    {
+      Console.WriteLine("~~~~~~~~~~~~");
+      Console.WriteLine($"{order.Customer}, Your order is as follows:");
+      Console.WriteLine($"{order.Store}");
+      Console.WriteLine($"{order.Pizza.Size}, {order.Pizza.Crust} Crust, {order.Pizza.Name}");
+      Console.WriteLine(GenerateToppingsList(order));
       Console.WriteLine("~~~~~~~~~~~~");
       Console.WriteLine($"Your total is ${order.TotalCost}");
     }
@@ -250,15 +261,27 @@ namespace PizzaBox.Client
     private static void AskOrderAgain()
     {
       Console.WriteLine("~~~~~~~~~~~~");
-      Console.WriteLine("~~~~~~~~~~~~");
       Console.WriteLine("Enter 1 to place another order.");
+      Console.WriteLine("Enter 2 to view your orders.");
 
       var valid = int.TryParse(Console.ReadLine(), out int input);
 
       if (valid && input == 1)
       {
-        Run();
+        Run(false);
       }
+
+      if (valid && input == 2)
+      {
+        foreach (var order in CustomerOrders)
+        {
+          Console.WriteLine("~~~~~~~~~~~~");
+          Console.WriteLine($"{order.Pizza.Size}, {order.Pizza.Crust} Crust, {order.Pizza.Name}");
+          Console.WriteLine(GenerateToppingsList(order));
+          AskOrderAgain();
+        }
+      }
+      else AskOrderAgain();
     }
   }
 }
