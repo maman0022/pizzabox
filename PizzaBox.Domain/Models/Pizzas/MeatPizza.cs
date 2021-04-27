@@ -12,7 +12,9 @@ namespace PizzaBox.Domain.Models.Pizzas
   {
     public MeatPizza()
     {
-
+      Name = "Meat Pizza";
+      Toppings.Add(new Pepperoni());
+      Toppings.Add(new Sausage());
     }
   }
 }

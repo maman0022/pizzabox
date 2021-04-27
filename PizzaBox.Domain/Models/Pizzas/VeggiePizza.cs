@@ -11,7 +11,7 @@ namespace PizzaBox.Domain.Models.Pizzas
   {
     public VeggiePizza()
     {
-
+      Name = "Veggie Pizza";
     }
   }
 }

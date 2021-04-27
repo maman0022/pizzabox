@@ -7,7 +7,7 @@ namespace PizzaBox.Domain.Models.Pizzas
   {
     public CustomPizza()
     {
-
+      Name = "Custom Pizza";
     }
   }
 }
