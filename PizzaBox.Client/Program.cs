@@ -78,8 +78,7 @@ namespace PizzaBox.Client
 
     private static string GetCustomerName()
     {
-      Console.WriteLine("~~~~~~~~~~~~");
-      Console.WriteLine("Please enter your name:");
+      PrintHeaderString("Please enter your name:");
 
       var input = Console.ReadLine();
 
@@ -93,7 +92,7 @@ namespace PizzaBox.Client
     }
     private static void PrintStoreList()
     {
-      Console.WriteLine("~~~~~~~~~~~~");
+      PrintHeaderString("Please enter the store number:");
 
       var index = 0;
 
@@ -102,7 +101,6 @@ namespace PizzaBox.Client
         Console.WriteLine($"{++index} - {item}");
       }
 
-      Console.WriteLine("Please enter the store number:");
     }
     private static AStore SelectStore()
     {
@@ -118,15 +116,14 @@ namespace PizzaBox.Client
     }
     private static void PrintPizzaList()
     {
-      Console.WriteLine("~~~~~~~~~~~~");
+      PrintHeaderString("Please select a specialty pizza or a custom pizza:");
+
       var index = 0;
 
       foreach (var item in _pizzaSingleton.Pizzas)
       {
         Console.WriteLine($"{++index} - {item.Name}");
       }
-
-      Console.WriteLine($"Please select a specialty pizza or a custom pizza.");
     }
     private static APizza SelectPizza()
     {
@@ -142,7 +139,8 @@ namespace PizzaBox.Client
     }
     private static void PrintToppingList(Order order)
     {
-      Console.WriteLine("~~~~~~~~~~~~");
+      PrintHeaderString("Please select your toppings:");
+      Console.WriteLine("Enter the number for each topping in one line:");
 
       var index = 0;
 
@@ -150,9 +148,6 @@ namespace PizzaBox.Client
       {
         Console.WriteLine($"{++index} - {item} = ${item.Price}");
       }
-
-      Console.WriteLine("Please select your toppings:");
-      Console.WriteLine("Enter the number for each topping in one line:");
 
       SelectToppings(order);
     }
@@ -182,7 +177,7 @@ namespace PizzaBox.Client
     }
     private static void PrintSizeList()
     {
-      Console.WriteLine("~~~~~~~~~~~~");
+      PrintHeaderString("Please select a pizza size:");
 
       var index = 0;
 
@@ -190,8 +185,6 @@ namespace PizzaBox.Client
       {
         Console.WriteLine($"{++index} - {item.Name} = ${item.Price}");
       }
-
-      Console.WriteLine($"Please select a pizza size");
     }
     private static ASize SelectSize()
     {
@@ -207,7 +200,7 @@ namespace PizzaBox.Client
     }
     private static void PrintCrustList()
     {
-      Console.WriteLine("~~~~~~~~~~~~");
+      PrintHeaderString("Please select a crust:");
 
       var index = 0;
 
@@ -215,8 +208,6 @@ namespace PizzaBox.Client
       {
         Console.WriteLine($"{++index} - {item.Name} = ${item.Price}");
       }
-
-      Console.WriteLine($"Please select a crust");
     }
     private static ACrust SelectCrust()
     {
@@ -242,13 +233,13 @@ namespace PizzaBox.Client
     }
     private static void PrintOrder(Order order)
     {
-      Console.WriteLine("~~~~~~~~~~~~");
-      Console.WriteLine($"{order.Customer}, Your order is as follows:");
+      Console.WriteLine();
+      PrintHeaderString($"{order.Customer}, Your order is as follows:");
       Console.WriteLine($"{order.Store}");
       Console.WriteLine($"{order.Pizza.Size}, {order.Pizza.Crust} Crust, {order.Pizza.Name}");
       Console.WriteLine(GenerateToppingsList(order));
-      Console.WriteLine("~~~~~~~~~~~~");
-      Console.WriteLine($"Your total is ${order.TotalCost}");
+      PrintHeaderString($"Your total is ${order.TotalCost}");
+      Console.WriteLine();
     }
     private static void SaveOrderToDatabase(Order order)
     {
@@ -260,9 +251,10 @@ namespace PizzaBox.Client
     }
     private static void AskOrderAgain()
     {
-      Console.WriteLine("~~~~~~~~~~~~");
-      Console.WriteLine("Enter 1 to place another order.");
-      Console.WriteLine("Enter 2 to view your orders.");
+      Console.WriteLine("Enter 1 to order another pizza.");
+      Console.WriteLine("Enter 2 to view your pizzas.");
+      //Console.WriteLine("Enter 3 to edit your pizzas.");
+      Console.WriteLine("Enter 'CTRL + C' to complete your order and checkout.");
 
       var valid = int.TryParse(Console.ReadLine(), out int input);
 
@@ -273,20 +265,37 @@ namespace PizzaBox.Client
 
       if (valid && input == 2)
       {
-        decimal total = 0.00m;
-        foreach (var order in CustomerOrders)
-        {
-          Console.WriteLine("------------");
-          Console.WriteLine($"{order.Pizza.Size}, {order.Pizza.Crust} Crust, {order.Pizza.Name}");
-          Console.WriteLine(GenerateToppingsList(order));
-          Console.WriteLine($"${order.TotalCost}");
-          total += order.TotalCost;
-        }
-        Console.WriteLine("------------");
-        Console.WriteLine($"Grand Total: ${total}");
+        var total = PrintAllPizzasAndGetTotal();
+        PrintHeaderString($"Grand Total: ${total}");
+        Console.WriteLine();
         AskOrderAgain();
       }
+
       else AskOrderAgain();
+    }
+    private static void PrintHeaderString(string header)
+    {
+      Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+      Console.WriteLine(header);
+      Console.WriteLine("------------------------------------");
+    }
+
+    private static decimal PrintAllPizzasAndGetTotal()
+    {
+      decimal total = 0.00m;
+      int index = 0;
+
+      Console.WriteLine();
+
+      foreach (var order in CustomerOrders)
+      {
+        PrintHeaderString($"Pizza #{++index}, Store: {order.Store.Name}");
+        Console.WriteLine($"{order.Pizza.Size}, {order.Pizza.Crust} Crust, {order.Pizza.Name}");
+        Console.WriteLine(GenerateToppingsList(order));
+        Console.WriteLine($"${order.TotalCost}");
+        total += order.TotalCost;
+      }
+      return total;
     }
   }
 }
